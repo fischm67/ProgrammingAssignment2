@@ -5,13 +5,16 @@
 
 makeCacheMatrix <- function(x = matrix()) {
     m <- NULL                                           ## instantiate a local m variable to allow cacheSolve to assign
-    set <- function(y) {                                ## define function set, overrides original matrix and resets global m variable
+    set <- function(y) {                                ## define function set, overrides original matrix and resets 
+                                                        ## global m variable
         if(!is.matrix(y)) stop("Must be a matrix")      ## check to make sure you are assigning a matrix data type
-        x <<- y                                         ## if it is a matrix then use superassignment to right over original
-        m <<- NULL                                      ## superassign cached global variable so cacheSolve will re-compute the inverse
+        x <<- y                                         ## if a matrix then use superassignment to write over original
+        m <<- NULL                                      ## superassign cached global variable so cacheSolve will 
+                                                        ## re-compute the inverse
     }
     get <- function() x                                 ## returns the current matrix
-    setInverse <- function(setImatrix) {                ## untilized by cacheMatrix to store inverse matrix in global variable m
+    setInverse <- function(setImatrix) {                ## untilized by cacheMatrix to store inverse matrix in 
+                                                        ## global variable m
         if(!is.matrix(setImatrix)) stop("Must be a matrix")
         m <<- setImatrix                                ## use superassignment to store inverse matrix
     }
@@ -26,11 +29,13 @@ makeCacheMatrix <- function(x = matrix()) {
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
     m <- x$getInverse()                                 ## utilize getInverse function from makeCacheMatrix object
-    if(!is.null(m)) {                                   ## if global m variable has been reset to NULL cacheSolve will compute inverse
-        message("getting cached data")                  ## output message indicating the cached inverse matrix is being returned
+    if(!is.null(m)) {                                   ## if global m variable has been reset to NULL cacheSolve will 
+                                                        ## compute inverse
+        message("getting cached data")                  ## output message for cached inverse matrix being returned
         return(m)
     }
-    data <- x$get()                                     ## if global m variable is NULL utilize get function from makeCacheMatrix to get current matrix
+    data <- x$get()                                     ## if global m variable is NULL utilize get function from 
+                                                        ## makeCacheMatrix to get current matrix
     m <- solve(data, ...)                               ## assign local m variable to the inverse matrix
     x$setInverse(m)                                     ## utilize setInverse to set the global m variable to latest inverse matrix
     m                                                   ## return inverse matrix to user
