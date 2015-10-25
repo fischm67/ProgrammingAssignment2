@@ -5,18 +5,30 @@
 
 makeCacheMatrix <- function(x = matrix()) {
     m <- NULL                                           ## instantiate a local m variable to allow cacheSolve to assign
+    if(!is.matrix(x)) {                                 ## check to make sure initial value is a matrix
+        stop("Must be a matrix")                        ## if not send message
+    }
+
     set <- function(y) {                                ## define function set, overrides original matrix and resets 
                                                         ## global m variable
-        if(!is.matrix(y)) stop("Must be a matrix")      ## check to make sure you are assigning a matrix data type
-        x <<- y                                         ## if a matrix then use superassignment to write over original
-        m <<- NULL                                      ## superassign cached global variable so cacheSolve will 
+        if(!is.matrix(y)) {                             ## check to make sure you are assigning a matrix data type
+            stop("Must be a matrix")
+            }
+        else {
+            x <<- y                                     ## if a matrix then use superassignment to write over original
+            m <<- NULL                                  ## superassign cached global variable so cacheSolve will
+        }
                                                         ## re-compute the inverse
     }
     get <- function() x                                 ## returns the current matrix
     setInverse <- function(setImatrix) {                ## untilized by cacheMatrix to store inverse matrix in 
                                                         ## global variable m
-        if(!is.matrix(setImatrix)) stop("Must be a matrix")
-        m <<- setImatrix                                ## use superassignment to store inverse matrix
+        if(!is.matrix(setImatrix)) {
+            stop("Must be a matrix")
+            }
+        else {
+            m <<-setImatrix                             ## use superassignment to store inverse matrix
+        }
     }
     getInverse <- function() m                          ## returns inverse matrix
     list(set = set, get = get,                          ## list out available functions with the makeCacheMatrix object
